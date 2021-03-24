@@ -13,7 +13,7 @@ function Greeting({initialName = ''}) {
   // que será chamada e inicializará a variável de estado apensas quando necessário.
   // Isso é chamado de LAZY INITIALIZER (inicializador "preguiçoso")
   const [name, setName] = React.useState(() => window.localStorage.getItem('name') || initialName)
-
+  const [count, setCount] = React.useState(0)
   // 🐨 Here's where you'll use `React.useEffect`.
   // The callback should set the `name` in localStorage.
   // 💰 window.localStorage.setItem('name', name)
@@ -22,6 +22,7 @@ function Greeting({initialName = ''}) {
     // Atualizando o localStorage com um efeito colateral da atualização
     // do componenete que foi disparada pela atualização do estado
     window.localStorage.setItem('name', name)
+    setCount(count +1)
   }, [name]) // Dependência -> só chama o useEffect quando a variável de estado name for alterada
 
 
@@ -36,6 +37,7 @@ function Greeting({initialName = ''}) {
       </form>
       {name ? <strong>Hello {name}</strong> : 'Please type your name'}
       <div>localStorage: {window.localStorage.getItem('name')}</div>
+      <div>Contador: {count}</div>
     </div>
   )
 }
