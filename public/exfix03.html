@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-bt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercício de Fixação 3</title>
+  <style>
+    label {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@17.0.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.12.4/babel.js"></script>
+
+  <script type="text/babel">
+
+    /*
+    
+    // Converta a função abaixo em um componente.
+
+    function inputSet(id, labelText, onInputChange) {
+      return (
+        <div>
+          <label htmlFor={id}>{labelText}</label>
+          <input id={id} type="number" onChange={onInputChange} />
+        </div>
+      )
+    }
+
+    */
+
+    function InputSet({id, labelText, onInputChange}) {
+      return (
+        <div>
+          <label htmlFor={id}>{labelText}</label>
+          <input id={id} type="number" onChange={onInputChange} />
+        </div>
+      )
+    }
+
+    /*
+    
+    // Converta esta função em um componente 
+    function result(imc, classif) {
+      return (
+        <>
+          <div className="result">IMC: {imc}</div>
+          <div className="result">{classif}</div>
+        </>
+      )     
+    }
+
+    */
+
+    function Result({imc, classif}) { // coloco os parâmentros entre chaves no método
+      return (
+        <> {/* Fragment (tag vazia) */}
+          <div className="result">IMC: {imc}</div>
+          <div className="result">{classif}</div>
+        </>
+      )
+    }
+
+    function Form() {
+
+      /*
+      Crie as seguintes variáveis de estado:
+         * peso
+         * altura
+         * classif
+         * imc
+      */
+
+      /*
+        // sem nada dentro dos parenteses, pois o estado iniciará sem valor
+
+        const [peso, setPeso] = React.useState()
+        const [altura, setAltura] = React.useState()
+        const [imc, setImc] = React.useState()
+        const [classif, setClassif] = React.useState()
+      */
+
+      // agrupando as variáveis de estado
+
+      const [state, setState] = React.useState({
+        peso: undefined,
+        altura: undefined,
+        classif: undefined,
+        imc: undefined
+      })
+
+      const {peso, altura, classif, imc} = state 
+
+      function handleInputChange(event) {
+        /* Faça as modificações necessárias na manipulação das variáveis de estado
+           nas linhas abaixo. */
+
+        if(event.target.id === 'peso') setState({...state, peso: event.target.value})
+        else if(event.target.id === 'altura') setState({...state, altura: event.target.value})
+      }
+
+
+      /* Use o código a seguir dentro da função seguinte em um useEffect() tendo
+        como dependências as variáveis de estado estadoPeso e estadoAltura.
+        Faça as modificações necessárias na manipulação das variáveis de estado
+        para que o código funcione. 
+      */
+      
+      // Início do código para useEffect()
+        React.useEffect(() => {
+
+            let imcTemp, classifTemp
+
+            if(isNaN(peso) || isNaN(altura)) imcTemp = '---'
+            else imcTemp = peso / altura ** 2
+
+            if(imcTemp < 18.5) 
+              classifTemp = 'Abaixo do peso'
+            else if(imcTemp > 18.5 && imcTemp < 25)
+              classifTemp = 'Peso Normal'
+            else if(imcTemp >= 25 && imcTemp < 30)
+              classifTemp = 'Sobrepeso'
+            else if(imcTemp >= 30 && imcTemp < 35)
+              classifTemp = 'Obesidade Grau I'
+            else if(imcTemp >= 35 && imcTemp < 40)
+              classifTemp = 'Obesidade Grau II'
+            else if(imcTemp >= 40)
+              classifTemp = 'Obesidade Grau III ou Mórbida'
+            else
+              classifTemp = ''
+              
+              /* // chama os estados atuais
+                setImc(imcTemp)
+                setClassif(classifTemp)
+              */
+
+            setState({...state, imc: imcTemp, classif: classifTemp})
+
+            /*
+              cria a dependência dentro do useEffect,
+              que é executado quando há alteração nas variáveis indicadas na dependência
+            */
+
+        }, [peso, altura])
+
+      // Fim do código para useEffect()
+
+      return (
+        <>
+        <h1>Cálculo do IMC</h1>
+        <form>
+          { /* Substitua as chamadas de função abaixo pelos componentes correspondentes */ }
+          <InputSet id="peso" labelText="Peso (kg)" onInputChange={handleInputChange} />
+          <InputSet id="altura" labelText="Altura (m)" onInputChange={handleInputChange} />
+          <Result imc={imc} classif={classif} />
+        </form>
+        </>
+      )
+    }
+
+    ReactDOM.render(<Form />, document.getElementById('root'))
+
+  </script>
+
+</body>
+
+</html>
